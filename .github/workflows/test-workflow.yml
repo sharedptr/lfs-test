@@ -12,6 +12,8 @@ jobs:
       uses: actions/checkout@v2
       with:
         lfs: true
+    - name: Show data
+      run: cat data/*
     - name: Checkout LFS objects
       run: git lfs checkout
     - name: Set up Python 3.8
