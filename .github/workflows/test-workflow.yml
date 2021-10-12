@@ -1,0 +1,70 @@
+name: Validation-Statistic
+
+on: push
+
+jobs:
+  analyze:
+    name: analyze the sound data (valid or not)
+    runs-on: ubuntu-latest
+    steps:
+#     - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Install requirements
+      run: pip install -r requirements.txt
+    - name: Run analyzer
+      run: python tools/analyze_script.py
+    - name: upload analyze artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: analyze-artifact
+        path: artifacts/analyze_artifact.csv
+      
+  stats:
+    name: statistics collection
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+        
+    - name: apt update
+      run: sudo apt update
+        
+    - name: ffmpeg
+      run: sudo apt install ffmpeg
+      
+    - name: libsndfile1
+      run: sudo apt install libsndfile1
+      
+    - name: libsndfile-dev
+      run: sudo apt install libsndfile-dev
+      
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+#     - name: Install requirements
+#       run: sudo pip3 install -r requirements.txt
+      
+#     - name: manual install soundfile
+#       run: sudo apt-get install python3-soundfile
+      
+    - name: Run stats collector
+      run: python ./tools/stats_script.py
+      
+    - name: upload stats artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: stats-artifact
+        path: artifacts/stats_artifact.csv
