@@ -10,6 +10,10 @@ jobs:
 #     - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
     - name: Check out repository code
       uses: actions/checkout@v2
+      with:
+        lfs: true
+    - name: Checkout LFS objects
+      run: git lfs checkout
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -31,7 +35,12 @@ jobs:
 
     - name: Check out repository code
       uses: actions/checkout@v2
-      
+      with:
+        lfs: true
+
+    - name: Checkout LFS objects
+      run: git lfs checkout
+
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
